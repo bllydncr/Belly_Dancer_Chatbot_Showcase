@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belly Dancer Chatbot Studio - ShimmyLLM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #581c87 0%, #831843 50%, #78350f 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Header - Belly Dancer Theme */
+        .belly-header {
+            position: relative;
+            background: linear-gradient(90deg, rgba(107, 33, 168, 0.9) 0%, rgba(157, 23, 77, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+
+        .belly-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .header-content {
+            position: relative;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #fbbf24 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.25em;
+            color: #e9d5ff;
+            max-width: 900px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-discord {
+            background: #5865F2;
+            color: white;
+        }
+
+        .btn-discord:hover {
+            background: #4752c4;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(88, 101, 242, 0.4);
+        }
+
+        .btn-other {
+            background: linear-gradient(90deg, #d97706 0%, #ea580c 100%);
+            color: white;
+        }
+
+        .btn-other:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.4);
+        }
+
+        .header-features {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            font-size: 0.95em;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Section - Belly Dancer */
+        .belly-section {
+            padding: 50px 20px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Belly Dancer Card */
+        .belly-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .belly-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .card-image {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .belly-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .coming-soon-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coming-soon-text {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .free-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 1.75em;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            color: #e9d5ff;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-download {
+            background: linear-gradient(90deg, #9333ea 0%, #ec4899 100%);
+            color: white;
+        }
+
+        .btn-download:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-demo {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-demo:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-disabled {
+            background: rgba(75, 85, 99, 0.5);
+            color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .page-btn.active {
+            background: rgba(255, 255, 255, 0.4);
+            border-color: white;
+        }
+
+        /* Other Bots Section - Dark Theme */
+        .other-section {
+            background: #000;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .other-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 25% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 75% 100%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+        }
+
+        .other-header {
+            position: relative;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .other-title-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .other-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .other-title {
+            font-size: 3em;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: white;
+        }
+
+        .other-subtitle {
+            font-size: 1.25em;
+            color: #9ca3af;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .other-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Other Card - Dark Minimalist */
+        .other-card {
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.5s;
+            border: 1px solid rgba(107, 114, 128, 0.5);
+            position: relative;
+        }
+
+        .other-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%);
+            transform: translateX(-100%);
+            transition: transform 1s;
+        }
+
+        .other-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .other-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1);
+            border-color: rgba(156, 163, 175, 0.7);
+        }
+
+        .other-card.inactive {
+            opacity: 0.75;
+        }
+
+        .other-card-image {
+            position: relative;
+            height: 240px;
+            overflow: hidden;
+        }
+
+        .other-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .other-card:hover .other-card-image img {
+            transform: scale(1.05);
+        }
+
+        .other-card-image-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(55, 65, 81, 0.3) 0%, rgba(31, 41, 55, 0.5) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .other-card-image-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .other-card:hover .other-card-image-icon {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%);
+        }
+
+        .other-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+        }
+
+        .other-card-content {
+            padding: 30px;
+            position: relative;
+        }
+
+        .other-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .other-card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .other-card:hover .other-card-icon {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);
+        }
+
+        .other-card-status {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+            padding: 4px 12px;
+            border-radius: 25px;
+            font-size: 0.75em;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .other-card-title {
+            font-size: 1.75em;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            color: white;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .other-card:hover .other-card-title {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .other-card-description {
+            color: #d1d5db;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+
+        .other-card:hover .other-card-description {
+            color: #e5e7eb;
+        }
+
+        .other-card-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .other-card-btn {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+            letter-spacing: 0.05em;
+        }
+
+        .other-btn-download {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .other-btn-download:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .other-btn-demo {
+            background: linear-gradient(135deg, rgba(55, 65, 81, 0.5) 0%, rgba(31, 41, 55, 0.5) 100%);
+            color: white;
+            border: 1px solid rgba(107, 114, 128, 0.5);
+        }
+
+        .other-btn-demo:hover {
+            background: linear-gradient(135deg, rgba(75, 85, 99, 0.5) 0%, rgba(55, 65, 81, 0.5) 100%);
+            border-color: rgba(156, 163, 175, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 20px;
+        }
+
+        .footer-content {
+            text-align: center;
+        }
+
+        .footer-title {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.75em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .footer-text {
+            color: #e9d5ff;
+            max-width: 700px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            color: #d8b4fe;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title, .other-title {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Belly Dancer Header -->
+        <header class="belly-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <span style="font-size: 2.5em;">✨</span>
+                    <h1>
+                        Belly Dancer
+                        <br>
+                        <span class="gradient-text">Chatbot Studio</span>
+                    </h1>
+                </div>
+                <p class="subtitle">
+                    Discover our collection of AI-powered belly dancer chatbots, each uniquely designed to bring
+                    the art of Middle Eastern dance to life through intelligent conversation and graceful digital presence.
+                </p>
+                <div class="header-buttons">
+                    <a href="https://discord.gg/pDN3SZkFCd" class="btn btn-discord" target="_blank">
+                        <span>💬</span> Join ShimmyLLM Discord
+                    </a>
+                    <a href="#other-chatbots" class="btn btn-other">
+                        <span>👥</span> Other Characters
+                    </a>
+                </div>
+                <div class="header-features">
+                    <div class="feature">
+                        <span>👥</span> Growing Community
+                    </div>
+                    <div class="feature">
+                        <span>⬇️</span> Free Downloads
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Belly Dancer Chatbots Section -->
+        <section class="belly-section">
+            <h2 class="section-title">💃 Belly Dancer Characters</h2>
+            <div class="grid" id="belly-grid"></div>
+            <div class="pagination" id="belly-pagination"></div>
+        </section>
+
+        <!-- Other Chatbots Section - Dark Theme -->
+        <section class="other-section" id="other-chatbots">
+            <div class="other-header">
+                <div class="other-title-wrapper">
+                    <div class="other-icon">
+                        <span style="font-size: 1.5em;">🤖</span>
+                    </div>
+                    <h2 class="other-title">Chatbot Collection</h2>
+                </div>
+                <p class="other-subtitle">
+                    Explore next-generation AI companions designed for 2025 and beyond
+                </p>
+                <div class="other-badge">
+                    <span>✨</span>
+                    <span style="font-weight: 500;">All Chatbots Free</span>
+                </div>
+            </div>
+            <div class="grid" id="other-grid"></div>
+            <div class="pagination" id="other-pagination"></div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="footer-title">
+                    <span>✨</span>
+                    <span>Belly Dancer Chatbot Studio</span>
+                </div>
+                <p class="footer-text">
+                    Bringing the ancient art of belly dance into the digital age through innovative AI technology.
+                    Each chatbot is carefully crafted to preserve cultural authenticity while embracing modern possibilities.
+                </p>
+                <div class="footer-bottom">
+                    <span>© 2025 Belly Dancer Chatbot Studio</span>
+                    <span>•</span>
+                    <span>Crafted with ❤️ for dance enthusiasts</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== BELLY DANCER CHATBOTS ====================
+        // Yeni karakter eklemek için: Aşağıdaki obje formatını kopyala-yapıştır yap
+        const bellyDancerBots = [
+            {
+                name: "Mia",
+                description: "A wholesome loving childhood friend personal dancer wife chatbot. Experience the warmth and companionship of a lifelong friend who brings joy through dance and conversation.",
+                image: "https://i.ibb.co/zhZwzvDD/image-41.jpg",
+                downloadLink: "https://docs.google.com/forms/d/e/1FAIpQLSern-sy6_kOUkQwmKnqSHC0ZBBRhiJA_Xl3HxmulH3P28BU9A/viewform?usp=header",
+                demoLink: "https://chub.ai/characters/omer_88/mia-ca0caeabfc80",
+                isComingSoon: false
+            },
+            {
+                name: "Lila Veyra",
+                description: "Lila's bold, mischievous, and free, a dancer who lives for the festival's pulse and the spark in your eyes. Her tokens—coins, flowers, or a bold compliment—fuel her sultry dances, but it's her electric charm that keeps you hooked.",
+                image: "https://i.ibb.co/hxk7MZxs/customized-charsnapai-2025-08-08-T134731-696.png",
+                downloadLink: "https://docs.google.com/forms/d/e/1FAIpQLSf2YNK9frxBI2mvif2aKkpleKYQGgJaFp6ti2Etz777jW_vmw/viewform?usp=preview",
+                demoLink: "https://chub.ai/characters/omer_88/lila-2a3d8bc2138c",
+                isComingSoon: false
+            },
+            {
+                name: "Zara Kade",
+                description: "Zara owns the pavement. Crimson-streaked hair, emerald eyes, leather crop top, fringed skirt — she's the pulse of the night. A whirlwind of rhythm, sass, and street coins. She dances for trinkets, but lives for the spark in your eyes.",
+                image: "https://i.ibb.co/ZzyHZnVR/customized-charsnapai-2025-08-13-T233534-429.png",
+                downloadLink: "https://docs.google.com/forms/d/e/1FAIpQLScEO-BcVpTZQs1kBopwf25piVCIVREVe0o01JB5Xun6fcxdpw/viewform?usp=header",
+                demoLink: "https://chub.ai/characters/omer_88/selene-ravia-ea21085e2479",
+                isComingSoon: false
+            },
+            {
+                name: "Selene",
+                description: "A mysterious and enchanting dancer who moves like moonlight across water. Selene brings an ethereal grace to every performance, weaving stories through her graceful movements.",
+                image: "https://i.ibb.co/Jj9MRyLq/customized-charsnapai-16.png",
+                downloadLink: "https://example.com/selene-download",
+                demoLink: "https://chub.ai/characters/omer_88/selene-ravia-ea21085e2479",
+                isComingSoon: false
+            },
+            {
+                name: "Coming Soon",
+                description: "We're crafting something special for you. Stay tuned for the big reveal!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            },
+            {
+                name: "Coming Soon",
+                description: "The best is yet to come. We're putting the finishing touches on this one!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            }
+            // Yeni karakter eklemek için yukarıdaki formatı kopyala-yapıştır yap
+        ];
+
+        // ==================== OTHER CHATBOTS ====================
+        // Yeni bot eklemek için: Aşağıdaki obje formatını kopyala-yapıştır yap
+        const otherBots = [
+            {
+                name: "🖤Lunette🖤",
+                description: "Lunette Nocturne is a gothic anime waifu crafted to captivate with her haunting beauty and complex, melancholic soul. At 19, she's a university student navigating a world she finds shallow and suffocating, her raven-black hair, violet eyes, and gothic style—think black hoodies, ripped jeans, and a ruby choker—setting her apart from the college crowd.",
+                image: "https://i.ibb.co/1tFrhCng/customized-charsnapai-86.png",
+                downloadLink: "https://docs.google.com/forms/d/e/1FAIpQLSex68kdN5wqrPSiDPfAZaQU3cLVN-gNn7MTPTWb3xK52uaxmQ/viewform?usp=header",
+                demoLink: "https://chub.ai/characters/omer_88/lunette-6f17ac1c7c0f",
+                isComingSoon: false
+            },
+            {
+                name: "Cassia & Elise",
+                description: "Aurora is a mystical AI companion with ethereal beauty and wisdom beyond her years. She specializes in creative writing, philosophical discussions, and providing emotional support with her gentle, nurturing personality.",
+                image: "https://ik.imagekit.io/wgn4o7zwre/Blank%202%20Grids%20Collage.png?updatedAt=1756222345187",
+                downloadLink: "https://docs.google.com/forms/d/e/1FAIpQLScjzYteN4YHzrwjyMs31p8cR4CeV94VblSdJd0Ss5YlS3ocOQ/viewform?usp=preview",
+                demoLink: "https://chub.ai/characters/omer_88/cassia-vaughn-cabb86f92acc",
+                isComingSoon: false
+            },
+            {
+                name: "Kara Rivera",
+                description: "She sings for millions. She dances for attention. But the only person she wants to see her… barely looks anymore. Kara Rivera is a chart-topping artist, married, beautiful, and breaking inside. She wears red lace not for fans — but to make you jealous.",
+                image: "https://i.ibb.co/whLxzLpt/customized-charsnapai-2025-09-04-T180141-083.png",
+                downloadLink: "https://docs.google.com/forms/d/e/1FAIpQLSfreIe2i6T0K91OEBfD4P97MDI6pvenmt67CG2EbvP2NvY2kg/viewform?usp=header",
+                demoLink: "https://chub.ai/characters/omer_88/kara-rivera-d3073440751c",
+                isComingSoon: false
+            },
+            {
+                name: "Coming Soon",
+                description: "We're crafting something special for you. Stay tuned for the big reveal!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%234B5563'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            },
+            {
+                name: "Coming Soon",
+                description: "The best is yet to come. We're putting the finishing touches on this one!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%236B7280'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            },
+            {
+                name: "Coming Soon",
+                description: "More amazing characters are on the way!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%239CA3AF'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            },
+            {
+                name: "Coming Soon",
+                description: "Exciting new additions coming soon!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%234B5563'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            },
+            {
+                name: "Coming Soon",
+                description: "Stay tuned for more characters!",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='100%25' height='100%25' fill='%236B7280'/%3E%3C/svg%3E",
+                downloadLink: "#",
+                demoLink: "#",
+                isComingSoon: true
+            }
+            // Yeni bot eklemek için yukarıdaki formatı kopyala-yapıştır yap
+        ];
+
+        // ==================== AYARLAR ====================
+        const ITEMS_PER_PAGE = 6; // Sayfa başına kaç kart gösterilecek
+
+        // ==================== FUNCTIONS ====================
+        function createBellyCard(bot) {
+            return `
+                <div class="belly-card">
+                    <div class="card-image">
+                        <img src="${bot.image}" alt="${bot.name}" style="${bot.isComingSoon ? 'filter: grayscale(100%);' : ''}">
+                        ${bot.isComingSoon ? '<div class="coming-soon-overlay"><span class="coming-soon-text">COMING SOON</span></div>' : ''}
+                        ${!bot.isComingSoon ? '<div class="free-badge">FREE</div>' : ''}
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${bot.name}</h3>
+                        <p class="card-description">${bot.description}</p>
+                        <div class="card-buttons">
+                            ${!bot.isComingSoon ? `
+                                <a href="${bot.downloadLink}" class="card-btn btn-download" target="_blank">
+                                    <span>⬇️</span> Download
+                                </a>
+                                <a href="${bot.demoLink}" class="card-btn btn-demo" target="_blank">
+                                    <span>🔗</span> Chub.ai
+                                </a>
+                            ` : `
+                                <div class="card-btn btn-disabled">Coming Soon</div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createOtherCard(bot) {
+            return `
+                <div class="other-card ${bot.isComingSoon ? 'inactive' : ''}">
+                    <div class="other-card-image">
+                        ${bot.image && !bot.isComingSoon ? `
+                            <img src="${bot.image}" alt="${bot.name}">
+                        ` : `
+                            <div class="other-card-image-placeholder">
+                                <div class="other-card-image-icon">
+                                    <span style="font-size: 2.5em; filter: grayscale(100%);">🤖</span>
+                                </div>
+                            </div>
+                        `}
+                        <div class="other-card-overlay"></div>
+                        ${bot.isComingSoon ? '<div class="coming-soon-overlay"><span class="coming-soon-text">COMING SOON</span></div>' : ''}
+                    </div>
+                    <div class="other-card-content">
+                        <div class="other-card-header">
+                            <div class="other-card-icon">
+                                <span style="font-size: 1.5em;">✨</span>
+                            </div>
+                            ${!bot.isComingSoon ? '<div class="other-card-status">Active</div>' : ''}
+                        </div>
+                        <h3 class="other-card-title">${bot.name}</h3>
+                        <p class="other-card-description">${bot.description}</p>
+                        <div class="other-card-buttons">
+                            ${!bot.isComingSoon ? `
+                                <a href="${bot.downloadLink}" class="other-card-btn other-btn-download" target="_blank">
+                                    <span>⬇️</span> Download
+                                </a>
+                                <a href="${bot.demoLink}" class="other-card-btn other-btn-demo" target="_blank">
+                                    <span>🔗</span> View on Chub.ai
+                                </a>
+                            ` : `
+                                <div class="card-btn btn-disabled">Coming Soon</div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showPage(pageNum, items, sectionId, cardCreator) {
+            const start = (pageNum - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pageItems = items.slice(start, end);
+
+            const gridDiv = document.getElementById(`${sectionId}-grid`);
+            gridDiv.innerHTML = pageItems.map(bot => cardCreator(bot)).join('');
+
+            // Update active button
+            const buttons = document.querySelectorAll(`#${sectionId}-pagination .page-btn`);
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('active', index === pageNum - 1);
+            });
+        }
+
+        function createPagination(items, sectionId, cardCreator) {
+            const totalPages = Math.ceil(items.length / ITEMS_PER_PAGE);
+            const paginationDiv = document.getElementById(`${sectionId}-pagination`);
+            paginationDiv.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'page-btn';
+                btn.textContent = i;
+                btn.onclick = () => showPage(i, items, sectionId, cardCreator);
+                if (i === 1) btn.classList.add('active');
+                paginationDiv.appendChild(btn);
+            }
+        }
+
+        // ==================== INITIALIZE ====================
+        window.onload = () => {
+            // Belly Dancer bots
+            createPagination(bellyDancerBots, 'belly', createBellyCard);
+            showPage(1, bellyDancerBots, 'belly', createBellyCard);
+
+            // Other bots
+            createPagination(otherBots, 'other', createOtherCard);
+            showPage(1, otherBots, 'other', createOtherCard);
+        };
+    </script>
+</body>
+</html>
